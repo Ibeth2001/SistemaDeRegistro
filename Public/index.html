@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Equipos</title>
+</head>
+<body>
+    <h1>Registrar Equipos</h1>
+    <form id="equipoForm">
+        <input type="text" id="nombre" placeholder="Nombre del equipo" required>
+        <input type="text" id="ip" placeholder="IP" required>
+        <input type="text" id="agencia" placeholder="Agencia" required>
+        <input type="text" id="ubicacion" placeholder="Ubicación" required>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <h2>Subir archivo Excel</h2>
+    <form id="excelForm" enctype="multipart/form-data">
+        <input type="file" id="file" name="file" accept=".xlsx" required>
+        <button type="submit">Subir</button>
+    </form>
+
+    <h2>Exportar Equipos</h2>
+    <a href="/export">Exportar a Excel</a>
+
+    <script>
+        document.getElementById('equipoForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                ip: document.getElementById('ip').value,
+                agencia: document.getElementById('agencia').value,
+                ubicacion: document.getElementById('ubicacion').value
+            };
+
+            fetch('/equipos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(response => response.text())
+            .then(result => alert(result));
+        });
+
+        document.getElementById('excelForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', document.getElementById('file').files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.text())
+            .then(result => alert(result));
+        });
+    </script>
+</body>
+</html>
