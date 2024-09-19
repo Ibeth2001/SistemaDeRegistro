@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Equipos</title>
+    <link rel="stylesheet" href="../Public/style.css">
 </head>
 <body>
-    <h1>Registrar Equipos</h1>
+    <h1>Registro de Equipos</h1>
+
+    <!-- Formulario de Registro de Equipos -->
+    <h2>Registrar Nuevo Equipo</h2>
     <form id="equipoForm">
         <input type="text" id="nombre" placeholder="Nombre del equipo" required>
         <input type="text" id="ip" placeholder="IP" required>
@@ -15,16 +19,39 @@
         <button type="submit">Registrar</button>
     </form>
 
+    <!-- Formulario para Subir Archivo Excel -->
     <h2>Subir archivo Excel</h2>
     <form id="excelForm" enctype="multipart/form-data">
         <input type="file" id="file" name="file" accept=".xlsx" required>
         <button type="submit">Subir</button>
     </form>
 
+    <!-- Exportar Datos a Excel -->
     <h2>Exportar Equipos</h2>
     <a href="/export">Exportar a Excel</a>
 
+    <!-- Barra de Búsqueda -->
+    <h2>Buscar Equipos</h2>
+    <input type="text" id="search" class="search-bar" placeholder="Buscar por nombre, IP o agencia...">
+
+    <!-- Tabla de Equipos Registrados -->
+    <h2>Listado de Equipos</h2>
+    <table id="equipoTable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>IP</th>
+                <th>Agencia</th>
+                <th>Ubicación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se llenarán los datos desde el servidor -->
+        </tbody>
+    </table>
+
     <script>
+        // Función para registrar un equipo
         document.getElementById('equipoForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const data = {
@@ -39,9 +66,13 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).then(response => response.text())
-            .then(result => alert(result));
+            .then(result => {
+                alert(result);
+                cargarEquipos();  // Recargar la tabla después de agregar un equipo
+            });
         });
 
+        // Función para subir archivo Excel
         document.getElementById('excelForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const formData = new FormData();
@@ -51,8 +82,50 @@
                 method: 'POST',
                 body: formData
             }).then(response => response.text())
-            .then(result => alert(result));
+            .then(result => {
+                alert(result);
+                cargarEquipos();  // Recargar la tabla después de la subida de archivo
+            });
         });
+
+        // Función para cargar los equipos en la tabla
+        function cargarEquipos() {
+            fetch('/equipos').then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('equipoTable').querySelector('tbody');
+                tableBody.innerHTML = '';  // Limpiar tabla
+                data.forEach(equipo => {
+                    const row = `<tr>
+                        <td>${equipo.nombre}</td>
+                        <td>${equipo.ip}</td>
+                        <td>${equipo.agencia}</td>
+                        <td>${equipo.ubicacion}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            });
+        }
+
+        // Filtrar equipos por búsqueda
+        document.getElementById('search').addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#equipoTable tbody tr');
+
+            rows.forEach(row => {
+                const nombre = row.cells[0].innerText.toLowerCase();
+                const ip = row.cells[1].innerText.toLowerCase();
+                const agencia = row.cells[2].innerText.toLowerCase();
+
+                if (nombre.includes(searchValue) || ip.includes(searchValue) || agencia.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Cargar los equipos al iniciar la página
+        cargarEquipos();
     </script>
 </body>
 </html>

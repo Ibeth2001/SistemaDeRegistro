@@ -65,5 +65,13 @@ app.get('/export', (req, res) => {
         workbook.xlsx.write(res).then(() => res.end());
     });
 });
+// Obtener todos los equipos (para la tabla)
+app.get('/equipos', (req, res) => {
+    db.query('SELECT * FROM equipos', (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+    });
+});
+
 
 app.listen(5500, () => console.log('Servidor iniciado en el puerto 3000'));
