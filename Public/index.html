@@ -7,10 +7,16 @@
     <link rel="stylesheet" href="../Public/style.css">
 </head>
 <body>
-    <h1>Registro de Equipos</h1>
-
+    <header>
+        <h1 class="titulo1">Registro de Equipos</h1>
+        <div>
+            <!-- Barra de Búsqueda -->
+            <input type="text" id="search" class="search-bar" placeholder="Buscar por nombre, IP o agencia...">
+            <button class="buscar">BUSCAR</button>
+        </div>
+    </header>
     <!-- Formulario de Registro de Equipos -->
-    <h2>Registrar Nuevo Equipo</h2>
+    <h3>Registrar Nuevo Equipo</h3>
     <form id="equipoForm">
         <input type="text" id="nombre" placeholder="Nombre del equipo" required>
         <input type="text" id="ip" placeholder="IP" required>
@@ -18,24 +24,8 @@
         <input type="text" id="ubicacion" placeholder="Ubicación" required>
         <button type="submit">Registrar</button>
     </form>
-
-    <!-- Formulario para Subir Archivo Excel -->
-    <h2>Subir archivo Excel</h2>
-    <form id="excelForm" enctype="multipart/form-data">
-        <input type="file" id="file" name="file" accept=".xlsx" required>
-        <button type="submit">Subir</button>
-    </form>
-
-    <!-- Exportar Datos a Excel -->
-    <h2>Exportar Equipos</h2>
-    <a href="/export">Exportar a Excel</a>
-
-    <!-- Barra de Búsqueda -->
-    <h2>Buscar Equipos</h2>
-    <input type="text" id="search" class="search-bar" placeholder="Buscar por nombre, IP o agencia...">
-
     <!-- Tabla de Equipos Registrados -->
-    <h2>Listado de Equipos</h2>
+    <h3>Listado de Equipos</h3>
     <table id="equipoTable">
         <thead>
             <tr>
@@ -49,6 +39,21 @@
             <!-- Aquí se llenarán los datos desde el servidor -->
         </tbody>
     </table>
+    <section class="Opciones">
+        <div>
+        <!-- Formulario para Subir Archivo Excel -->
+        <h3>Subir archivo Excel</h3>
+        <form id="excelForm" enctype="multipart/form-data">
+            <input type="file" id="file" name="file" accept=".xlsx" required>
+            <button type="submit">Subir</button>
+        </form>
+        </div>
+        <div>
+            <!-- Exportar Datos a Excel -->
+            <h3>Exportar Equipos</h3>
+            <a href="/export">Exportar a Excel</a>
+        </div>
+    </section>
 
     <script>
         // Función para registrar un equipo

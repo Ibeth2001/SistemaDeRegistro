@@ -4,9 +4,27 @@ body {
     background-color: #f4f4f4;
     color: #333;
 }
+header{
+    display: flex;
+    justify-content:space-around;
+    background-color: black;
+    align-items: center;
 
-h1, h2 {
-    color: #4CAF50;
+}
+.buscar{
+    background-color:#4CAF50;
+    color: white;
+}
+.titulo1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f2f2f2;
+}
+h3 {
+    color: #4c5eaf;
+    display: flex;
+    align-items: center;
 }
 
 form {
@@ -64,4 +82,8 @@ tr:nth-child(even) {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+.Opciones{
+    display: flex;
+    justify-content: space-evenly;
 }
